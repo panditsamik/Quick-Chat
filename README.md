@@ -53,6 +53,8 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
 ## animated_text_kit 4.2.2
 [Link](https://pub.dev/packages/animated_text_kit)
+
+
 A flutter package which contains a collection of some cool and awesome text animations.
 ## Installation:
 
@@ -80,6 +82,8 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 
 ## firebase_core 2.7.1
 [Link](https://pub.dev/packages/firebase_core)
+
+
 A Flutter plugin to use the Firebase Core API, which enables connecting to multiple Firebase apps.
 ## Installation:
 
@@ -108,6 +112,8 @@ import 'package:firebase_core/firebase_core.dart';
 
 ## firebase_auth 4.2.10
 [Link](https://pub.dev/packages/firebase_auth)
+
+
 A Flutter plugin to use the Firebase Authentication API.
 ## Installation:
 
@@ -136,6 +142,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 ## cloud_firestore 4.4.4
 [Link](https://pub.dev/packages/cloud_firestore)
+
+
 A Flutter plugin to use the Cloud Firestore API.
 ## Installation:
 
@@ -163,6 +171,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 ## modal_progress_hud_nsn 0.3.0
 [Link](https://pub.dev/packages/modal_progress_hud_nsn)
+
+
 A simple widget wrapper to enable modal progress HUD (a modal progress indicator, HUD = Heads Up Display)
 ## Installation:
 
