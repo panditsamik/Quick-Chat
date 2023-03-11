@@ -51,7 +51,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
   }
 ```
 
-### animated_text_kit 4.2.2
+## animated_text_kit 4.2.2
 [Link](https://pub.dev/packages/animated_text_kit)
 A flutter package which contains a collection of some cool and awesome text animations.
 ## Installation:
