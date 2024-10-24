@@ -11,6 +11,8 @@ final _auth = FirebaseAuth.instance;
 var messageText;
 var loggedInUser;
 var _controller = TextEditingController();
+final ScrollController _scrollController = ScrollController();
+
 
 final _firestore = FirebaseFirestore.instance;
 
@@ -44,7 +46,7 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset : false,
+      resizeToAvoidBottomInset : true,
       appBar: AppBar(
         title: const Center(
           child: Text(
@@ -88,7 +90,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 flex: 6,
                 child: SizedBox(
                   height: 230,
-                  child: MessagesStream(),
+                  child: MessagesStream(scrollController: _scrollController),
                 ),
               ),
               Expanded(
@@ -125,21 +127,27 @@ class _ChatScreenState extends State<ChatScreen> {
                               MaterialStateProperty.all<Color>(Colors.blue),
                         ),
                         onPressed: () {
-                          print(messageText);
-                          print(loggedInUser.email);
-                          FirebaseFirestore.instance
-                              .collection('messages')
-                              .add({
-                            'text': messageText,
-                            'sender': loggedInUser.email,
-                          });
-                          _controller.clear();
+                          if (messageText.isNotEmpty) {
+                            FirebaseFirestore.instance.collection('messages').add({
+                              'text': messageText,
+                              'sender': loggedInUser?.email,
+                              'timestamp': FieldValue.serverTimestamp(),
+                            }).then((_) {
+                              _controller.clear();
+                              _scrollController.animateTo(
+                                _scrollController.position.maxScrollExtent,
+                                duration: Duration(milliseconds: 100),
+                                curve: Curves.easeInOut,
+                              );
+                            });
+                          }
                         },
+
                         child: const Text(
                           'Send',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 18.0,
+                            fontSize: 15.0,
                           ),
                         ),
                       ),
@@ -156,12 +164,19 @@ class _ChatScreenState extends State<ChatScreen> {
 }
 
 class MessagesStream extends StatelessWidget {
+
+
+  final ScrollController scrollController;
+
+  MessagesStream({required this.scrollController});
+
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
       stream: _firestore
           .collection('messages')
-          .orderBy('sender', descending: false)
+          .orderBy('timestamp') // Order by timestamp
           .snapshots(),
       builder: (context, AsyncSnapshot snapshot) {
         if (!snapshot.hasData) {
@@ -187,13 +202,11 @@ class MessagesStream extends StatelessWidget {
         }
         List<MessageBubble> finalmessages = [];
         finalmessages = messageBubbles.reversed.toList();
-        return Expanded(
-          child: ListView(
-            reverse: true,
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-            children: messageBubbles,
-          ),
+        return ListView(
+          controller: scrollController, // Attach the scroll controller
+          reverse: false,
+          padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
+          children: messageBubbles,
         );
       },
     );
